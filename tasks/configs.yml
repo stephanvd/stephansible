@@ -1,0 +1,22 @@
+---
+
+- name: osx settings
+  shell: sh files/osx
+
+- name: Copy solarized dark settings file
+  copy: src=files/Solarized-Dark-xterm-256color.terminal dest=/tmp/Solarized-Dark-xterm-256color.terminal
+
+- name: Set default terminal to solarized dark
+  command: open /tmp/Solarized-Dark-xterm-256color.terminal
+  ignore_errors: yes
+
+- name: Terminal settings
+  command: 'defaults write {{ user_lib_prefs }}/com.apple.Terminal {{ item }}'
+  with_items:
+    - '"Default Window Settings" -string "Solarized-Dark-xterm-256color"'
+    - '"Startup Window Settings" -string "Solarized-Dark-xterm-256color"'
+
+- name: copy dotfiles
+  copy: src="files/{{ item }}" dest="{{ home_dir }}/.{{ item }}" owner="{{ user }}" group=staff mode=640
+  with_items:
+    - gitignore

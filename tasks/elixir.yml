@@ -1,0 +1,8 @@
+- name: elixir | install elixir packages
+  homebrew: name={{ item }} state=latest
+  with_items:
+    - erlang
+    - elixir
+
+- name: elixir | install phoenix framework
+  shell: "mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v0.11.0/phoenix_new-0.11.0.ez"

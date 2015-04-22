@@ -1,0 +1,79 @@
+---
+- hosts: all
+
+  vars:
+    user: stephan
+    home_dir: "/Users/{{ user }}"
+    application_dir: "{{ home_dir }}/Applications"
+    caskroom_dir: /opt/homebrew-cask/Caskroom
+    zsh_path: /usr/local/bin/zsh
+    user_lib: "/Users/{{ user }}/Library"
+    user_lib_prefs: "{{ user_lib }}/Preferences"
+    ruby_version: 2.2.2
+    homebrew_cask_packages:
+      - alfred
+      - appcleaner
+      - atom
+      - boot2docker
+      - cyberduck
+      - deezer
+      - dropbox
+      - evernote
+      - firefox
+      - fluid
+      - flux
+      - garmin-express
+      - google-chrome
+      - google-chrome-canary
+      - google-drive
+      - grandperspective
+      - hipchat
+      - iterm2
+      - libreoffice
+      - macvim
+      - pgadmin3
+      - sequel-pro
+      - skitch
+      - skype
+      - sonos
+      - sourcetree
+      - spectacle
+      - spotify
+      - steam
+      - sublime-text3
+      - synology-assistant
+      - synology-cloud-station
+      - synology-photo-station-uploader
+      - teamviewer
+      - the-unarchiver
+      - torbrowser
+      - transmission
+      - virtualbox
+      - vlc
+      - xmind
+      - ynab
+    homebrew_packages:
+      - ack
+      - elasticsearch
+      - htop
+      - mysql
+      - node
+      - postgresql
+      - rbenv
+      - ruby-build
+      - sqlite
+      - tmux
+      - wget
+      - zsh
+    homebrew_launch_agents:
+      - elasticsearch
+      - mysql
+      - postgresql
+    npm_packages:
+      - grunt-cli
+  tasks:
+    - include: tasks/homebrew.yml tags=homebrew
+    - include: tasks/configs.yml tags=configs
+    - include: tasks/ruby.yml tags=ruby
+    - include: tasks/npm.yml tags=npm
+    - include: tasks/elixir.yml tags=elixirc

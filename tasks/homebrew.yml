@@ -1,0 +1,32 @@
+---
+
+# - name: Update homebrew
+#   homebrew: name=git state=latest update_homebrew=yes
+
+- name: Install homebrew packages
+  homebrew: name={{ item }} state=latest
+  with_items: homebrew_packages
+
+- name: Tap homebrew dupes
+  homebrew_tap: tap=homebrew/dupes state=present
+
+- name: Tap homebrew cask
+  homebrew_tap: tap=caskroom/cask state=present
+
+- name: Tap homebrew cask versions
+  homebrew_tap: tap=caskroom/versions state=present
+
+- name: Install homebrew cask
+  homebrew: name=brew-cask
+
+- name: Install homebrew cask packages
+  homebrew_cask: name={{ item }} state=installed
+  with_items: homebrew_cask_packages
+
+- name: Start services at login
+  file: src=/usr/local/opt/{{ item }}/homebrew.mxcl.{{ item }}.plist path={{ home_dir }}/Library/LaunchAgents/homebrew.mxcl.{{ item }}.plist state=link force=yes
+  with_items: homebrew_launch_agents
+
+- name: Setup launch agents for services
+  command: launchctl load {{ home_dir }}/Library/LaunchAgents/homebrew.mxcl.{{ item }}.plist
+  with_items: homebrew_launch_agents

@@ -1,0 +1,30 @@
+---
+
+- name: rbenv | install rbenv and ruby-build
+  homebrew: name={{ item }} state=latest
+  with_items:
+    - rbenv
+    - ruby-build
+
+- name: rbenv | init
+  lineinfile: dest={{ home_dir }}/.zshrc line='eval "$(rbenv init -)"'
+
+- name: rbenv | check ruby {{ ruby_version }} installed
+  shell: rbenv versions | grep {{ ruby_version }}
+  register: ruby_installed
+  ignore_errors: yes
+
+- name: rbenv | install ruby {{ ruby_version }}
+  shell: rbenv install {{ ruby_version }}
+  when: ruby_installed|failed
+
+- name: rbenv | set global ruby {{ ruby_version }}
+  shell: rbenv global {{ ruby_version }}
+  when: ruby_installed|failed
+
+- name: rbenv | rehash
+  shell: rbenv rehash
+  when: ruby_installed|failed
+
+- name: ruby | copy gemrc
+  copy: src=files/gemrc dest={{ home_dir }}/.gemrc owner={{ user }} group=staff mode=0640
