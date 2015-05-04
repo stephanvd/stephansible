@@ -66,6 +66,7 @@
       - tmux
       - wget
       - zsh
+      - rethinkdb
     homebrew_launch_agents:
       - elasticsearch
       - mysql
